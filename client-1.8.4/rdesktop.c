@@ -324,6 +324,7 @@ static void parse_server_and_port(char *server)
 }
 
 #ifdef VBOX
+fprintf(stdout, "[!!!!!!!!!!!!! VBOX \n]\n");
 /* This disables iprt logging */
 DECLEXPORT(PRTLOGGER) RTCALL RTLogDefaultInit(void)
 {
@@ -359,6 +360,7 @@ extern int wrap_main(char * buf)
 	RD_BOOL geometry_option = False;
 
 #ifdef HAVE_LOCALE_H
+	fprintf(stdout, "[!!!!!!!!!!!!! HAVE_LOCALE_H \n]\n");
 	/* Set locale according to environment */
 	locale = setlocale(LC_ALL, "");
 	if (locale)
@@ -368,8 +370,6 @@ extern int wrap_main(char * buf)
 
 #endif
 
-
-
 	/* setup default flags for TS_INFO_PACKET */
 	flags = RDP_INFO_MOUSE | RDP_INFO_DISABLECTRLALTDEL
 		| RDP_INFO_UNICODE | RDP_INFO_MAXIMIZESHELL | RDP_INFO_ENABLEWINDOWSKEY;
@@ -377,15 +377,11 @@ extern int wrap_main(char * buf)
 	prompt_password = False;
 	g_seamless_spawn_cmd[0] = domain[0] = g_password[0] = shell[0] = directory[0] = 0;
 	g_embed_wnd = 0;	
-
-
 	g_rdpusb = True;
 
-
-
+	//STRNCPY(server, "192.168.226.151", sizeof(server));
 	STRNCPY(server, "127.0.0.1", sizeof(server));
 	parse_server_and_port(server);
-
 
 	if (!username_option)
 	{
@@ -400,7 +396,7 @@ extern int wrap_main(char * buf)
 		g_username = (char *) xmalloc(pwlen);
 		STRNCPY(g_username, pw->pw_name, pwlen);
 	}
-	fprintf(stdout, "111111111111111\n");
+	
 #ifdef HAVE_ICONV
 
 	fprintf(stdout, "HAVE_ICONV\n");
@@ -504,9 +500,7 @@ extern int wrap_main(char * buf)
 		{
 			rdp_disconnect();
 			continue;
-		}
-
-		
+		}		
 
 		DEBUG(("Connection successful.\n"));
 		fprintf(stdout, "777\n");
@@ -520,9 +514,7 @@ extern int wrap_main(char * buf)
 		fprintf(stdout, "888\n");
 		tcp_run_ui(False);
 
-		//for(int i=0; i<30; ++i)
-		//fuzz_device_list(buf);
-
+		
 		DEBUG(("Disconnecting...\n"));
 		//rdp_disconnect();
 
@@ -567,14 +559,7 @@ extern int wrap_main(char * buf)
 		return EXRD_WINDOW_CLOSED;
 	}
 	return handle_disconnect_reason(deactivated, ext_disc_reason);
-
-
 }
-
-
-
-
-
 
 
 #ifdef EGD_SOCKET
@@ -616,8 +601,7 @@ generate_random_egd(uint8 * buf)
 #endif
 
 /* Generate a 32-byte random for the secure transport code. */
-void
-generate_random(uint8 * random)
+void generate_random(uint8 * random)
 {
 	struct stat st;
 	struct tms tmsbuf;
